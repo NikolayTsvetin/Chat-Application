@@ -11,12 +11,14 @@ namespace Chat_Client
     {
         static void Main(string[] args)
         {
+            TcpClient client = null;
+            NetworkStream stream = null;
             string message = String.Empty;
 
             while (!message.Equals("Exit"))
             {
-                TcpClient client = new TcpClient("127.0.0.1", 8000);
-                NetworkStream stream = client.GetStream();
+                client = new TcpClient("127.0.0.1", 8000);
+                stream = client.GetStream();
 
                 Console.WriteLine("Please, type a message: ");
 
@@ -33,9 +35,9 @@ namespace Chat_Client
                 Console.WriteLine($"Received response from server: {serverResponseMessage}");
             }
 
-            //stream.Dispose();
-            //stream.Close();
-            //client.Close();
+            stream?.Dispose();
+            stream?.Close();
+            client?.Close();
         }
     }
 }
