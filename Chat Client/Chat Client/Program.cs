@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -19,20 +20,16 @@ namespace Chat_Client
             {
                 client = new TcpClient("127.0.0.1", 8000);
                 stream = client.GetStream();
+                StreamWriter sw = new StreamWriter(stream);
 
                 Console.WriteLine("Please, type a message: ");
 
                 message = Console.ReadLine();
-                Byte[] data = Encoding.ASCII.GetBytes(message);
+                sw.Write($"{Environment.UserName}: {message}");
 
-                stream.Write(data, 0, data.Length);
                 Console.WriteLine($"Message sent to server: {message}");
-                stream.Flush();
-                data = new Byte[256];
-                int serverResponse = stream.Read(data, 0, data.Length);
-                string serverResponseMessage = Encoding.ASCII.GetString(data);
 
-                Console.WriteLine($"Received response from server: {serverResponseMessage}");
+                sw.Dispose();
             }
 
             stream?.Dispose();
