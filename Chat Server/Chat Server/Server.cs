@@ -29,12 +29,26 @@ namespace Chat_Server
             {
                 using (StreamReader sr = new StreamReader(stream))
                 {
-                    string message = sr.ReadToEnd();
+                    string message = $"[{DateTime.Now}] {sr.ReadToEnd()}";
                     Console.WriteLine($"{message}");
 
+                    SaveMessageToHistory(message);
                     client.Close();
                     // TODO: Show whoever sends a message the whole conversation (in the case that it is public chatroom and everybody can read all the messages)
                 }
+            }
+        }
+
+        private void SaveMessageToHistory(string message)
+        {
+            if (!File.Exists(@"./ChatHistory"))
+            {
+                Directory.CreateDirectory(@"./ChatHistory");
+            }
+
+            using (StreamWriter file = new StreamWriter($@"./ChatHistory/{DateTime.Now.ToString("dd/MM/yyyy")}-chat-history.txt", true))
+            {
+                file.WriteLine($"{message}");
             }
         }
 
