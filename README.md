@@ -1,2 +1,2 @@
 # Chat-Application
-Chat application with server and client functionality.
+TCP Client-Server application supporting multiple clients.
