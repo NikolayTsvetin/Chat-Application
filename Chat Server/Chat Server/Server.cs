@@ -34,7 +34,6 @@ namespace Chat_Server
 
                     SaveMessageToHistory(message);
                     client.Close();
-                    // TODO: Show whoever sends a message the whole conversation (in the case that it is public chatroom and everybody can read all the messages)
                 }
             }
         }
