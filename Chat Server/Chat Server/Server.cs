@@ -13,12 +13,11 @@ namespace Chat_Server
         private IPAddress address = IPAddress.Parse("127.0.0.1");
         private const int port = 8000;
         private readonly TcpListener server;
-        private int _clients;
+        private static int _clients;
 
         public Server()
         {
             this.server = new TcpListener(address, port);
-            this._clients = 0;
         }
 
         private void HandleClient(TcpClient client)
@@ -33,6 +32,7 @@ namespace Chat_Server
                     Console.WriteLine($"{message}");
 
                     SaveMessageToHistory(message);
+                    _clients--;
                     client.Close();
                 }
             }
@@ -61,17 +61,16 @@ namespace Chat_Server
             {
                 while (true)
                 {
-                    if (this._clients == 0)
+                    if (_clients == 0)
                     {
                         Console.WriteLine("Waiting for client connection...");
                     }
 
                     TcpClient client = server.AcceptTcpClient();
-                    this._clients++;
+                    _clients++;
                     Thread connectClient = new Thread(() => HandleClient(client));
 
                     connectClient.Start();
-                    this._clients--;
                 }
             }
             catch (Exception ex)
